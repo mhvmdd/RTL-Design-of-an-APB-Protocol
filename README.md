@@ -1,4 +1,4 @@
-# RTL-Design-of-APB-Protocol
+# RTL-Design-of-AMBA-APB-Protocol
 
 ## System Overview
 This system is an AMBA APB (Advanced Peripheral Bus) interconnect that manages communication between one Master and two Slaves. It uses a wrapper module to handle signal multiplexing, routing, and state transitions.
