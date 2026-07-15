@@ -21,10 +21,6 @@ module apb_slave #(
 
     localparam STROBE_WIDTH = (DATA_WIDTH/8);
 
-    // States
-    localparam IDLE = 2'b00;
-    localparam SETUP = 2'b01;
-    localparam ACCESS = 2'b10;
     // Register addresses
     localparam integer DATA_REGISTER = 32'h0000_0000;
     localparam integer STATUS_REGISTER = 32'h0000_0004; // RO
@@ -98,8 +94,9 @@ module apb_slave #(
     // Slave Error Logic
     always @(*) begin
         PSLVERR = 1'b0; // Default to no error
-        if ((PSEL && (PADDR > CONFIG_REGISTER) && !PWRITE) || 
-        (PSEL && (PADDR != DATA_REGISTER && PADDR != CONTROL_REGISTER && PADDR != CONFIG_REGISTER) && PWRITE)) begin
+        if (PSEL && (((PADDR > CONFIG_REGISTER) && !PWRITE) || 
+        ((PADDR != DATA_REGISTER && PADDR != CONTROL_REGISTER && PADDR != CONFIG_REGISTER) && PWRITE) ||
+        PADDR[1:0] != 2'b00)) begin
             PSLVERR = 1'b1; // Error for invalid address
         end 
     end
